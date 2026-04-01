@@ -40,5 +40,5 @@ const videoSchema = new Schema(
 );
 
 
-videoSchema.plugin(mongooseAggregatePaginate);
+videoSchema.plugin(mongooseAggregatePaginate); // plugin is like an extension or gives extra features to videoSchema  'This lets you paginate results when using MongoDB aggregation pipelines'
 export const Video = mongoose.model("Video", videoSchema);

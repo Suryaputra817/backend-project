@@ -3,7 +3,7 @@ const asyncHandler = (requestHandeler) => {
     Promise.resolve(requestHandeler(req, res, next)).catch((err) => next(err));
   };
 };
-
+// the function requesthandler can be any thing as per our need but it only passes the req and res and next as parameter for further use it is like a rapper for try-catch ot resolve-reject
 export { asyncHandler };
 
 /*

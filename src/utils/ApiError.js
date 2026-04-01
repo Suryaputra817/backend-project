@@ -5,11 +5,11 @@ class ApiError extends Error {
     errors = [],
     stack = ""
   ) {
-    super(message);
+    super(message); //as it is a extended class and Error only takes message so first use super keyword then we can use this keywords
     this.statusCode = statusCode;
     this.data = null;
     this.message = message;
-    this.success = false;
+    this.success = false; // as error occured so always false
     this.errors = errors;
 
     if (stack) {

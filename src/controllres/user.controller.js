@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import fs from "fs";
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frontend
@@ -17,7 +18,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // get user details from frontend (here we are using postman for that)
   const { fullName, email, userName, password } = req.body;
-  console.log("email: ", email);
 
   // validation - not empty
   if (
@@ -29,10 +29,16 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   // check if user already exists :by username or email
-  const existedUser = User.findOne({
+  const existedUser = await User.findOne({
     $or: [{ userName }, { email }],
   });
   if (existedUser) {
+    if (req.files?.avatar?.[0]?.path) {
+      fs.unlinkSync(req.files.avatar[0].path);
+    }
+    if (req.files?.coverImage?.[0]?.path) {
+      fs.unlinkSync(req.files.coverImage[0].path);
+    }
     throw new ApiError(409, "User already exists with this email or username");
   }
 
@@ -53,11 +59,11 @@ const registerUser = asyncHandler(async (req, res) => {
 
   // create user object - create entry in db
   const user = await User.create({
-    fullName:fullName,
+    fullName: fullName,
     avatar: avatar.url,
     coverImage: coverImage?.url || "",
-    email:email,
-    password:password,
+    email: email,
+    password: password,
     userName: userName.toLowerCase(),
   });
 

@@ -17,11 +17,11 @@ export const verifyJWT = asyncHandler(async (req, _, next) => {
       decodedToken?._id.select("-password -refreshToken")
     );
     if (!user) {
-      // TODO: discuss about hfrontent in next vdo
+      // TODO: discuss about frontent in next vdo
       throw new ApiError(401, "Invalid Access Token");
     }
     req.user = user;
-    next();
+    // next();
   } catch (error) {
     throw new ApiError(401, error?.message || "Invalid access token");
   }
